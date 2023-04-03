@@ -5,9 +5,13 @@ function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
   const onClick = (newCategory: IToDo["category"]) => {
     setToDos((oldToDos) => {
-      const targetIndex = oldToDos.findIndex((todo) => todo.id);
-      const newToDos = { text, category, id };
-      return oldToDos;
+      const targetIndex = oldToDos.findIndex((todo) => todo.id === id);
+      const newToDo = { text, category: newCategory, id };
+      return [
+        ...oldToDos.slice(0, targetIndex),
+        newToDo,
+        ...oldToDos.slice(targetIndex + 1),
+      ];
     });
   };
   return (
