@@ -30,25 +30,27 @@ function App() {
 
   const onDragEnd = (info: DropResult) => {
     const { destination, draggableId, source } = info;
-    if (source.droppableId === destination?.droppableId) {
+    if (!destination) return;
+    if (source.droppableId === destination.droppableId) {
       // 같은 보드
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
         //1. delete Item on source index (기존에 있는거 삭제)
         boardCopy.splice(source.index, 1);
         //2. item을 이동한 위치에 있는 곳으로 생성
-        boardCopy.splice(destination?.index, 0, draggableId);
+        boardCopy.splice(destination.index, 0, draggableId);
         return {
           ...allBoards,
           [source.droppableId]: boardCopy,
         };
       });
-    } else if (destination?.droppableId != null) {
+    } else if (source.droppableId !== destination.droppableId) {
       setToDos((allBoards) => {
         const sourceBoardCopy = [...allBoards[source.droppableId]];
-        const destinationBoardCopy = [...allBoards[destination?.droppableId]];
+        const destinationBoardCopy = [...allBoards[destination.droppableId]];
         sourceBoardCopy.splice(source.index, 1);
         destinationBoardCopy.splice(destination.index, 0, draggableId);
+        console.log({ ...allBoards });
         return {
           ...allBoards,
           [source.droppableId]: sourceBoardCopy,
