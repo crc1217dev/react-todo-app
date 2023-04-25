@@ -9,5 +9,7 @@ declare module "styled-components" {
     boardColor: string;
     accentColor: string;
     cardBgColor: string;
+    beforeBoardDrag: string;
+    afterBoardDrag: string;
   }
 }

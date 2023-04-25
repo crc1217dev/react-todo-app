@@ -5,12 +5,16 @@ export const darkTheme: DefaultTheme = {
   accentColor: "#9c88ff",
   cardBgColor: "transparent",
   boardColor: "#616161",
+  beforeBoardDrag: "white",
+  afterBoardDrag: "white",
 };
 
 export const lightTheme: DefaultTheme = {
-  bgColor: "#2196F3",
-  textColor: "#212121",
-  accentColor: "#9c88ff",
-  cardBgColor: "#FAFAFA",
-  boardColor: "#E0E0E0",
+  bgColor: "#A6D0DD",
+  textColor: "#40514E",
+  accentColor: "#ADD8E6",
+  cardBgColor: "rgba(203, 241, 245, 0.8)",
+  boardColor: "#E3FDFD",
+  beforeBoardDrag: "#f5d7b3",
+  afterBoardDrag: "#9cf3f3",
 };
