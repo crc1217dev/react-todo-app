@@ -35,10 +35,11 @@ function App() {
       // 같은 보드
       setToDos((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
+        const taskObj = boardCopy[source.index];
         //1. delete Item on source index (기존에 있는거 삭제)
         boardCopy.splice(source.index, 1);
         //2. item을 이동한 위치에 있는 곳으로 생성
-        boardCopy.splice(destination.index, 0, draggableId);
+        boardCopy.splice(destination.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId]: boardCopy,
@@ -47,9 +48,10 @@ function App() {
     } else if (source.droppableId !== destination.droppableId) {
       setToDos((allBoards) => {
         const sourceBoardCopy = [...allBoards[source.droppableId]];
+        const taskObj = sourceBoardCopy[source.index];
         const destinationBoardCopy = [...allBoards[destination.droppableId]];
         sourceBoardCopy.splice(source.index, 1);
-        destinationBoardCopy.splice(destination.index, 0, draggableId);
+        destinationBoardCopy.splice(destination.index, 0, taskObj);
         console.log({ ...allBoards });
         return {
           ...allBoards,
@@ -58,8 +60,6 @@ function App() {
         };
       });
     }
-
-    // return [""];
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>

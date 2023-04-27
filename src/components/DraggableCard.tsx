@@ -1,6 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import { ITodo } from "../atoms";
 
 const Card = styled.div<{ isDragging: boolean }>`
   background-color: ${(props) =>
@@ -17,14 +18,15 @@ const Card = styled.div<{ isDragging: boolean }>`
 `;
 
 interface IDraggableCardProps {
-  toDo: string;
+  toDoId: number;
+  toDoText: string;
   index: number;
 }
 
-function DraggableCard({ toDo, index }: IDraggableCardProps) {
-  console.log({ toDo }, "has been Rerendered");
+function DraggableCard({ toDoId, toDoText, index }: IDraggableCardProps) {
+  console.log({ toDoText }, "has been Rerendered");
   return (
-    <Draggable key={toDo} draggableId={toDo} index={index}>
+    <Draggable key={toDoText} draggableId={toDoText} index={index}>
       {(magic, snapshot) => (
         <Card
           isDragging={snapshot.isDragging}
@@ -32,7 +34,7 @@ function DraggableCard({ toDo, index }: IDraggableCardProps) {
           {...magic.dragHandleProps}
           {...magic.draggableProps}
         >
-          {toDo}
+          {toDoText}
         </Card>
       )}
     </Draggable>
