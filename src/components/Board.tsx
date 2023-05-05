@@ -38,7 +38,10 @@ const Form = styled.form`
   width: 100%;
   input {
     width: 100%;
-    padding: 4;
+    padding: 4px;
+    &:hover {
+      background-color: rgba(132, 132, 132, 0.027);
+    }
   }
 `;
 
@@ -66,7 +69,7 @@ function Board({ toDos, boardId }: IBoardProps) {
       console.log([boardId], ":", [...allBoards[boardId], newToDo]);
       return {
         ...allBoards,
-        [boardId]: [...allBoards[boardId], newToDo],
+        [boardId]: [newToDo, ...allBoards[boardId]],
       };
     });
     setValue("toDo", "");

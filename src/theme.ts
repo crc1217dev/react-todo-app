@@ -9,10 +9,13 @@ export const darkTheme: DefaultTheme = {
   afterBoardDrag: "white",
 };
 
+//
+
 export const lightTheme: DefaultTheme = {
-  bgColor: "#A6D0DD",
+  bgColor:
+    "linear-gradient(52deg, rgba(181,225,238,1) 0%, rgba(142,208,177,0.9) 89%)",
   textColor: "#40514E",
-  accentColor: "#ADD8E6",
+  accentColor: "rgb(142, 208, 177, 0.7)",
   cardBgColor: "rgba(203, 241, 245, 0.8)",
   boardColor: "#E3FDFD",
   beforeBoardDrag: "#f5d7b3",
