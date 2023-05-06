@@ -66,7 +66,6 @@ function Board({ toDos, boardId }: IBoardProps) {
       text: toDo,
     };
     setToDos((allBoards) => {
-      console.log([boardId], ":", [...allBoards[boardId], newToDo]);
       return {
         ...allBoards,
         [boardId]: [newToDo, ...allBoards[boardId]],

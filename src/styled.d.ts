@@ -11,5 +11,6 @@ declare module "styled-components" {
     cardBgColor: string;
     beforeBoardDrag: string;
     afterBoardDrag: string;
+    svgShadow: string;
   }
 }

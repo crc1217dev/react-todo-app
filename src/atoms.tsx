@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 
 export interface ITodo {
   id: number;
@@ -8,24 +8,25 @@ export interface ITodo {
 export interface IToDoState {
   [key: string]: ITodo[];
 }
-export interface IBoardState {
-  [key: string]: IToDoState[];
-}
+
+const localStorageEffect =
+  (key: string) =>
+  ({ setSelf, onSet }: any) => {
+    const savedValue = localStorage.getItem(key);
+    console.log(savedValue);
+    if (savedValue != null) {
+      setSelf(JSON.parse(savedValue));
+    }
+
+    onSet((newValue: any, _: any, isReset: boolean) => {
+      isReset
+        ? localStorage.removeItem(key)
+        : localStorage.setItem(key, JSON.stringify(newValue));
+    });
+  };
 
 export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: {},
+  effects: [localStorageEffect("toDo")],
 });
-
-export const boardState = atom<IBoardState>({
-  key: "Boards",
-  default: {},
-});
-
-// export const boardSelector = selector({
-//   key: "boardSelector",
-//   get: ({get}) => {
-//     const toDos = get(toDoState);
-//     const Boards = get(boardState);
-//   }
-// })

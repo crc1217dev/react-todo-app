@@ -7,6 +7,7 @@ export const darkTheme: DefaultTheme = {
   boardColor: "#616161",
   beforeBoardDrag: "white",
   afterBoardDrag: "white",
+  svgShadow: "drop-shadow(2px 3.5px 1.5px rgb(0 0 0 / 0.4))",
 };
 
 //
@@ -20,4 +21,5 @@ export const lightTheme: DefaultTheme = {
   boardColor: "#E3FDFD",
   beforeBoardDrag: "#f5d7b3",
   afterBoardDrag: "#9cf3f3",
+  svgShadow: "drop-shadow(2px 3.5px 1.5px rgb(0 0 0 / 0.4))",
 };
