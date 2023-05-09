@@ -1,4 +1,9 @@
-import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable,
+} from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { orderState, toDoSelector, toDoState } from "./atoms";
@@ -24,11 +29,26 @@ const Boards = styled.div`
 function App() {
   const setToDos = useSetRecoilState(toDoState);
   const toDos = useRecoilValue(toDoSelector);
+  const setOrder = useSetRecoilState(orderState);
 
   const onDragEnd = (info: DropResult) => {
-    const { destination, source } = info;
+    const { destination, source, type, draggableId } = info;
     console.log(info);
     if (!destination) return;
+    //Board 순서 변경
+    if (type === "BOARD") {
+      setOrder((prevOrder) => {
+        const orderCopy = [...prevOrder];
+        console.log(prevOrder);
+        console.log(...orderCopy);
+        orderCopy.splice(source.index, 1);
+        orderCopy.splice(destination.index, 0, draggableId);
+        console.log(prevOrder, orderCopy);
+        return orderCopy;
+      });
+      return;
+    }
+    //삭제 용
     if (destination.droppableId === "TrashCan") {
       console.log("deleted");
       return setToDos((allBoards) => {
@@ -40,6 +60,7 @@ function App() {
         };
       });
     }
+    //게시판 내 Todo 이동
     if (source.droppableId === destination.droppableId) {
       // 같은 보드
       setToDos((allBoards) => {
@@ -54,6 +75,7 @@ function App() {
           [source.droppableId]: boardCopy,
         };
       });
+      // 다른 게시판 ToDo 이동
     } else if (source.droppableId !== destination.droppableId) {
       setToDos((allBoards) => {
         const sourceBoardCopy = [...allBoards[source.droppableId]];
@@ -74,17 +96,24 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board
-              key={boardId}
-              boardId={boardId}
-              toDos={toDos[boardId]}
-            ></Board>
-          ))}
-        </Boards>
+        <Droppable droppableId="Board" direction="horizontal" type="BOARD">
+          {(magic, snapshot) => (
+            <Boards ref={magic.innerRef} {...magic.droppableProps}>
+              {Object.keys(toDos).map((boardId, index) => (
+                <Board
+                  key={boardId}
+                  boardId={boardId}
+                  toDos={toDos[boardId]}
+                  index={index}
+                ></Board>
+              ))}
+              {magic.placeholder}
+            </Boards>
+          )}
+        </Droppable>
         <TrashCan />
       </Wrapper>
+
       <PlusButton />
     </DragDropContext>
   );

@@ -9,6 +9,7 @@ export interface IToDoState {
   [key: string]: ITodo[];
 }
 
+// localStorage에 저장
 const localStorageEffect =
   (key: string) =>
   ({ setSelf, onSet }: any) => {
@@ -43,9 +44,7 @@ export const toDoSelector = selector({
     const toDos = get(toDoState);
     const order = get(orderState);
     const orderedToDos: IToDoState = {};
-    order.map((key) => {
-      orderedToDos[key] = toDos[key];
-    });
+    order.map((key) => (orderedToDos[key] = toDos[key]));
     console.log(orderedToDos);
     return orderedToDos;
   },

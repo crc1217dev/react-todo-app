@@ -23,7 +23,6 @@ interface IDraggableCardProps {
 }
 
 function DraggableCard({ toDoId, toDoText, index }: IDraggableCardProps) {
-  console.log({ toDoText }, "has been Rerendered");
   return (
     <Draggable key={toDoText} draggableId={toDoText} index={index}>
       {(magic, snapshot) => (
