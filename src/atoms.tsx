@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export interface ITodo {
   id: number;
@@ -29,4 +29,24 @@ export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: {},
   effects: [localStorageEffect("toDo")],
+});
+
+export const orderState = atom<string[]>({
+  key: "order",
+  default: [],
+  effects: [localStorageEffect("order")],
+});
+
+export const toDoSelector = selector({
+  key: "toDoSelector",
+  get: ({ get }) => {
+    const toDos = get(toDoState);
+    const order = get(orderState);
+    const orderedToDos: IToDoState = {};
+    order.map((key) => {
+      orderedToDos[key] = toDos[key];
+    });
+    console.log(orderedToDos);
+    return orderedToDos;
+  },
 });

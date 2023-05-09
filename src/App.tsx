@@ -1,7 +1,7 @@
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { DragDropContext, Draggable, DropResult } from "react-beautiful-dnd";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { orderState, toDoSelector, toDoState } from "./atoms";
 import Board from "./components/Board";
 import TrashCan from "./components/TrashCan";
 import PlusButton from "./components/PlusButton";
@@ -22,7 +22,8 @@ const Boards = styled.div`
   grid-template-columns: repeat(3, 1fr);
 `;
 function App() {
-  const [toDos, setToDos] = useRecoilState(toDoState);
+  const setToDos = useSetRecoilState(toDoState);
+  const toDos = useRecoilValue(toDoSelector);
 
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;

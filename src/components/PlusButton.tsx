@@ -1,19 +1,28 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "../atoms";
+import { orderState, toDoState } from "../atoms";
 
+const SvgButton = styled.svg`
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+  }
+  filter: ${(props) => props.theme.svgShadow};
+`;
 function PlusButton() {
-  const PlusButton = styled.svg`
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-    cursor: pointer;
-    &:hover {
-      color: ${(props) => props.theme.accentColor};
-    }
-    filter: ${(props) => props.theme.svgShadow};
-  `;
   const [toDos, setToDos] = useRecoilState(toDoState);
+  const [order, setOrder] = useRecoilState(orderState);
+
+  const setBoardValue = (promptInput: string) => {
+    setOrder((prevValue) => [...prevValue, promptInput]);
+    setToDos((allBoards) => {
+      return { ...allBoards, [promptInput]: [] };
+    });
+    console.log(toDos, order);
+  };
   const handleAddBoard = () => {
     const addBoardPrompt = prompt(
       "추가할 보드의 제목을 입력해 주세요.",
@@ -22,15 +31,12 @@ function PlusButton() {
     if (addBoardPrompt !== null) {
       Object.keys(toDos).filter((boardId) => boardId === addBoardPrompt)
         .length === 0
-        ? setToDos((allBoards) => {
-            console.log(toDos);
-            return { ...allBoards, [addBoardPrompt]: [] };
-          })
+        ? setBoardValue(addBoardPrompt)
         : alert("already exist");
     } else alert("생성 취소");
   };
   return (
-    <PlusButton
+    <SvgButton
       onClick={handleAddBoard}
       width="64px"
       height="64px"
@@ -46,7 +52,7 @@ function PlusButton() {
         strokeLinejoin="round"
         d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
       ></path>
-    </PlusButton>
+    </SvgButton>
   );
 }
 
