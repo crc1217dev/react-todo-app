@@ -1,10 +1,5 @@
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "react-beautiful-dnd";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { orderState, toDoSelector, toDoState } from "./atoms";
 import Board from "./components/Board";
@@ -13,18 +8,19 @@ import PlusButton from "./components/PlusButton";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 1024px;
+  max-width: 1224px;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-wrap: nowrap;
 `;
 const Boards = styled.div`
   display: grid;
   width: 100%;
   gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 `;
 function App() {
   const setToDos = useSetRecoilState(toDoState);
@@ -113,7 +109,6 @@ function App() {
         </Droppable>
         <TrashCan />
       </Wrapper>
-
       <PlusButton />
     </DragDropContext>
   );

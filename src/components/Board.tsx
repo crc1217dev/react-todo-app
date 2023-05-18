@@ -2,8 +2,8 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import DraggableCard from "./DraggableCard";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { ITodo, toDoState } from "../atoms";
-import { useSetRecoilState } from "recoil";
+import { IToDoState, ITodo, orderState, toDoState } from "../atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const Wrapper = styled.div`
   padding: 10px 0px;
@@ -25,14 +25,31 @@ const Area = styled.div<IAreaProps>`
   transition: background-color 0.3s ease-in-out;
   padding: 20px;
 `;
+const TitleArea = styled.div`
+  display: flex;
+  border-bottom: 2px solid white;
+  margin-bottom: 5px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+`;
 const Title = styled.h2`
+  width: max-content;
   text-align: center;
   font-weight: 600;
-  margin-bottom: 10px;
   color: ${(props) => props.theme.textColor};
   font-size: 18px;
-  border-bottom: 1px solid white;
-  padding-bottom: 10px;
+  margin: 0 auto;
+  flex: 1;
+`;
+const BoardDeleteButtonWrapper = styled.svg`
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+  }
 `;
 const Form = styled.form`
   width: 100%;
@@ -60,7 +77,22 @@ interface IForm {
 
 function Board({ toDos, boardId, index }: IBoardProps) {
   const setToDos = useSetRecoilState(toDoState);
+  const [toDoOrder, setToDoOrder] = useRecoilState(orderState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
+  const onDeleteButtonClick = () => {
+    setToDoOrder((prevOrder) =>
+      prevOrder.filter((_, prevIndex) => index !== prevIndex)
+    );
+    setToDos((prevBoard) => {
+      const orderedBoard: IToDoState = {};
+      toDoOrder.map((key) =>
+        key === boardId
+          ? console.log(boardId)
+          : (orderedBoard[key] = prevBoard[key])
+      );
+      return orderedBoard;
+    });
+  };
   const onValid = ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
@@ -82,7 +114,24 @@ function Board({ toDos, boardId, index }: IBoardProps) {
           {...magic.dragHandleProps}
           {...magic.draggableProps}
         >
-          <Title>{boardId}</Title>
+          <TitleArea>
+            <Title>{boardId}</Title>
+            <BoardDeleteButtonWrapper
+              onClick={onDeleteButtonClick}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </BoardDeleteButtonWrapper>
+          </TitleArea>
           <Form onSubmit={handleSubmit(onValid)}>
             <input
               {...register("toDo", {

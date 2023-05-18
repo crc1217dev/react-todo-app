@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { orderState, toDoState } from "../atoms";
 
@@ -29,6 +29,9 @@ function PlusButton() {
       "ToDo List"
     );
     if (addBoardPrompt !== null) {
+      console.log(Object.keys(toDos), Object.keys(toDos).length);
+      if (Object.keys(toDos).length >= 4)
+        return alert("4개 이상은 생성할 수 없습니다.");
       Object.keys(toDos).filter((boardId) => boardId === addBoardPrompt)
         .length === 0
         ? setBoardValue(addBoardPrompt)

@@ -45,7 +45,7 @@ export const toDoSelector = selector({
     const order = get(orderState);
     const orderedToDos: IToDoState = {};
     order.map((key) => (orderedToDos[key] = toDos[key]));
-    console.log(orderedToDos);
+    console.log("ordered on recoils:", orderedToDos);
     return orderedToDos;
   },
 });
