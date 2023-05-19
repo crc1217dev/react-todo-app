@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { IToDoState, ITodo, orderState, toDoState } from "../atoms";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import EditButton from "./EditButton";
 
 const Wrapper = styled.div`
   padding: 10px 0px;
@@ -42,7 +43,11 @@ const Title = styled.h2`
   margin: 0 auto;
   flex: 1;
 `;
-const BoardDeleteButtonWrapper = styled.svg`
+const TitleButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const DeleteButton = styled.svg`
   width: 24px;
   height: 24px;
   margin-left: auto;
@@ -79,20 +84,31 @@ function Board({ toDos, boardId, index }: IBoardProps) {
   const setToDos = useSetRecoilState(toDoState);
   const [toDoOrder, setToDoOrder] = useRecoilState(orderState);
   const { register, setValue, handleSubmit } = useForm<IForm>();
+
+  //삭제 버튼 클릭 시
   const onDeleteButtonClick = () => {
-    setToDoOrder((prevOrder) =>
-      prevOrder.filter((_, prevIndex) => index !== prevIndex)
-    );
-    setToDos((prevBoard) => {
-      const orderedBoard: IToDoState = {};
-      toDoOrder.map((key) =>
-        key === boardId
-          ? console.log(boardId)
-          : (orderedBoard[key] = prevBoard[key])
+    // eslint-disable-next-line no-restricted-globals
+    const result = confirm("삭제하시겠습니까?");
+
+    if (result) {
+      // 1. order 배열을 삭제한 기준으로 변경 후 저장
+      setToDoOrder((prevOrder) =>
+        prevOrder.filter((_, prevIndex) => index !== prevIndex)
       );
-      return orderedBoard;
-    });
+      // 2. 삭제 버튼을 누른 boardId 값을 제외한 나머지만 리스트에 담기.
+      setToDos((prevBoard) => {
+        const orderedBoard: IToDoState = {};
+        toDoOrder.map((key) =>
+          key === boardId
+            ? console.log(boardId)
+            : (orderedBoard[key] = prevBoard[key])
+        );
+        return orderedBoard;
+      });
+    }
   };
+
+  //ToDo생성
   const onValid = ({ toDo }: IForm) => {
     const newToDo = {
       id: Date.now(),
@@ -106,6 +122,7 @@ function Board({ toDos, boardId, index }: IBoardProps) {
     });
     setValue("toDo", "");
   };
+
   return (
     <Draggable key={boardId} draggableId={boardId} index={index}>
       {(magic, snapshot) => (
@@ -116,21 +133,24 @@ function Board({ toDos, boardId, index }: IBoardProps) {
         >
           <TitleArea>
             <Title>{boardId}</Title>
-            <BoardDeleteButtonWrapper
-              onClick={onDeleteButtonClick}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </BoardDeleteButtonWrapper>
+            <TitleButtonWrapper>
+              <EditButton type={"BOARD"} />
+              <DeleteButton
+                onClick={onDeleteButtonClick}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </DeleteButton>
+            </TitleButtonWrapper>
           </TitleArea>
           <Form onSubmit={handleSubmit(onValid)}>
             <input

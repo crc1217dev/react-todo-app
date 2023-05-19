@@ -1,6 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import EditButton from "./EditButton";
 
 const Card = styled.div<{ isDragging: boolean }>`
   background-color: ${(props) =>
@@ -14,6 +15,9 @@ const Card = styled.div<{ isDragging: boolean }>`
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   color: ${(props) => props.theme.textColor};
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 interface IDraggableCardProps {
@@ -33,6 +37,7 @@ function DraggableCard({ toDoId, toDoText, index }: IDraggableCardProps) {
           {...magic.draggableProps}
         >
           {toDoText}
+          <EditButton type="CARD" key={toDoId} />
         </Card>
       )}
     </Draggable>

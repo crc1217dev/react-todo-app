@@ -24,14 +24,13 @@ function PlusButton() {
     console.log(toDos, order);
   };
   const handleAddBoard = () => {
+    if (Object.keys(toDos).length >= 4)
+      return alert("4개 이상은 생성할 수 없습니다.");
     const addBoardPrompt = prompt(
       "추가할 보드의 제목을 입력해 주세요.",
       "ToDo List"
     );
     if (addBoardPrompt !== null) {
-      console.log(Object.keys(toDos), Object.keys(toDos).length);
-      if (Object.keys(toDos).length >= 4)
-        return alert("4개 이상은 생성할 수 없습니다.");
       Object.keys(toDos).filter((boardId) => boardId === addBoardPrompt)
         .length === 0
         ? setBoardValue(addBoardPrompt)
