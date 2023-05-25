@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
-const StyledModal = styled.div`
-  display: none;
+export interface ModalStyle {
+  isOpen: boolean;
+}
+export const StyledModal = styled.div<ModalStyle>`
+  display: ${(props) => (props.isOpen ? "" : "none")};
   position: fixed;
   top: 0;
   right: 0;
@@ -17,17 +20,17 @@ const StyledModal = styled.div`
   section {
     width: 90%;
     max-width: 450px;
-    margin: 0 auto;
+    margin: 25% auto;
     border-radius: 0.3rem;
     background-color: #fff;
     /* 팝업이 열릴때 스르륵 열리는 효과 */
-    animation: modal-show 0.3s;
+    animation: ${(props) => (props.isOpen ? "modal-show" : "modal-close")} 0.5s;
     overflow: hidden;
   }
   section > header {
     position: relative;
     padding: 16px 64px 16px 16px;
-    background-color: #f1f1f1;
+    background-color: ${(props) => props.theme.boardColor};
     font-weight: 700;
   }
   section > header button {
@@ -51,25 +54,40 @@ const StyledModal = styled.div`
     text-align: right;
   }
   section > footer button {
-    padding: 6px 12px;
+    padding: 8px 14px;
     color: #fff;
-    background-color: #6c757d;
+    background-color: #8ecfcf;
     border-radius: 5px;
     font-size: 13px;
+    margin-inline-start: 16px;
+    &:hover {
+      background-color: #a1e7e7;
+    }
   }
   .modal.openModal {
     display: flex;
     align-items: center;
+    justify-content: center;
     /* 팝업이 열릴때 스르륵 열리는 효과 */
-    animation: modal-bg-show 0.3s;
+    /* animation: modal-bg-show 0.3s; */
   }
   @keyframes modal-show {
     from {
       opacity: 0;
-      margin-top: -50px;
+      margin-top: 0;
     }
     to {
       opacity: 1;
+      margin-top: 25%;
+    }
+  }
+  @keyframes modal-close {
+    from {
+      opacity: 1;
+      margin-top: 25%;
+    }
+    to {
+      opacity: 0;
       margin-top: 0;
     }
   }

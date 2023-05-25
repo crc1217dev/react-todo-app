@@ -4,6 +4,16 @@ export interface ITodo {
   id: number;
   text: string;
 }
+export interface IModal {
+  isOpen: boolean;
+  type: "BOARD" | "CARD";
+  //toDo 중복 확인 ID(생성일)
+  id: string | null;
+  formValue: string;
+  index: number;
+  //Board 식별 확인
+  boardId: string | null;
+}
 
 export interface IToDoState {
   [key: string]: ITodo[];
@@ -36,6 +46,17 @@ export const orderState = atom<string[]>({
   key: "order",
   default: [],
   effects: [localStorageEffect("order")],
+});
+export const modalState = atom<IModal>({
+  key: "modalOpen",
+  default: {
+    isOpen: false,
+    type: "BOARD",
+    formValue: "",
+    id: "",
+    index: 0,
+    boardId: null,
+  },
 });
 
 export const toDoSelector = selector({

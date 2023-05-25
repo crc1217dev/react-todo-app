@@ -134,7 +134,14 @@ function Board({ toDos, boardId, index }: IBoardProps) {
           <TitleArea>
             <Title>{boardId}</Title>
             <TitleButtonWrapper>
-              <EditButton type={"BOARD"} />
+              <EditButton
+                key={boardId}
+                id={null}
+                boardId={boardId}
+                value={boardId}
+                type={"BOARD"}
+                index={index}
+              />
               <DeleteButton
                 onClick={onDeleteButtonClick}
                 fill="none"
@@ -173,6 +180,7 @@ function Board({ toDos, boardId, index }: IBoardProps) {
                   <DraggableCard
                     key={toDo.id}
                     index={index}
+                    boardId={boardId}
                     toDoId={toDo.id}
                     toDoText={toDo.text}
                   />

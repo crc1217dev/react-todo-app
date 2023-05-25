@@ -1,6 +1,8 @@
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { modalState } from "../atoms";
 
-const Button = styled.svg<IEditProps>`
+const Button = styled.svg<ButtonStyle>`
   width: ${({ type }) => (type === "CARD" ? "16px" : "20px")};
   cursor: pointer;
   &:hover {
@@ -8,10 +10,23 @@ const Button = styled.svg<IEditProps>`
   }
 `;
 interface IEditProps {
-  type: string;
+  type: "CARD" | "BOARD";
+  id: string | null;
+  boardId: string | null;
+  value: string;
+  index: number;
 }
-function EditButton({ type }: IEditProps) {
-  const handleButtonOnclick = () => {};
+interface ButtonStyle {
+  type: "CARD" | "BOARD";
+}
+function EditButton({ type, id, value, index, boardId }: IEditProps) {
+  const setModal = useSetRecoilState(modalState);
+  const handleButtonOnclick = () => {
+    setModal((prevModal) => {
+      console.log(prevModal);
+      return { isOpen: true, type, formValue: value, id, boardId, index };
+    });
+  };
 
   return (
     <Button

@@ -5,6 +5,7 @@ import { orderState, toDoSelector, toDoState } from "./atoms";
 import Board from "./components/Board";
 import TrashCan from "./components/TrashCan";
 import PlusButton from "./components/PlusButton";
+import InputModalPopup from "./components/InputModalPopup";
 
 const Wrapper = styled.div`
   display: flex;
@@ -92,6 +93,7 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
+        <InputModalPopup key="popup" />
         <Droppable droppableId="Board" direction="horizontal" type="BOARD">
           {(magic, snapshot) => (
             <Boards ref={magic.innerRef} {...magic.droppableProps}>

@@ -24,20 +24,33 @@ interface IDraggableCardProps {
   toDoId: number;
   toDoText: string;
   index: number;
+  boardId: string;
 }
 
-function DraggableCard({ toDoId, toDoText, index }: IDraggableCardProps) {
+function DraggableCard({
+  toDoId,
+  toDoText,
+  index,
+  boardId,
+}: IDraggableCardProps) {
   return (
     <Draggable key={toDoText} draggableId={toDoText} index={index}>
       {(magic, snapshot) => (
         <Card
+          key={toDoId}
           isDragging={snapshot.isDragging}
           ref={magic.innerRef}
           {...magic.dragHandleProps}
           {...magic.draggableProps}
         >
           {toDoText}
-          <EditButton type="CARD" key={toDoId} />
+          <EditButton
+            type="CARD"
+            boardId={boardId}
+            value={toDoText}
+            id={toDoId + ""}
+            index={index}
+          />
         </Card>
       )}
     </Draggable>
