@@ -1,3 +1,3 @@
-# Create tODo with react-beautiful-dnd
+# Create toDo with react-beautiful-dnd
 
 
