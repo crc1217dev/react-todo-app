@@ -23,7 +23,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -51,5 +51,5 @@
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/styled-components": "^5.1.26"
   },
-  "homepage": "https://crc1217dev.github.io/react-todo-app"
+  "homepage": "https://crc1217dev.github.io/react-todo-app/"
 }
